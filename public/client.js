@@ -16,6 +16,38 @@ var operand1 = 0;
 var operand2 = 0;
 var operation = null;
 
+// Theme management
+const themes = ['default', 'dark', 'light', 'colorful'];
+let currentThemeIndex = 0;
+
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('calculatorTheme');
+    if (savedTheme && themes.includes(savedTheme)) {
+        currentThemeIndex = themes.indexOf(savedTheme);
+        applyTheme(savedTheme);
+    } else {
+        applyTheme(themes[0]);
+    }
+    
+    // Add theme toggle event listener
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+}
+
+function toggleTheme() {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    const newTheme = themes[currentThemeIndex];
+    applyTheme(newTheme);
+    localStorage.setItem('calculatorTheme', newTheme);
+}
+
+function applyTheme(theme) {
+    if (theme === 'default') {
+        document.documentElement.removeAttribute('data-theme');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}
+
 function calculate(operand1, operand2, operation) {
     var uri = location.origin + "/arithmetic";
 
@@ -198,3 +230,8 @@ function setLoading(loading) {
         buttons[i].disabled = loading;
     }
 }
+
+// Initialize theme when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+});
