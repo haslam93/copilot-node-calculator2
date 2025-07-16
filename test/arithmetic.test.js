@@ -96,6 +96,57 @@ describe('Arithmetic', function () {
 // TODO: Challenge #1
  
 
+    describe('Modulo', function () {
+        it('calculates modulo of two positive integers', function (done) {
+            request.get('/arithmetic?operation=modulo&operand1=10&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('calculates modulo with zero dividend', function (done) {
+            request.get('/arithmetic?operation=modulo&operand1=0&operand2=5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('calculates modulo with negative dividend', function (done) {
+            request.get('/arithmetic?operation=modulo&operand1=-10&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -1 });
+                    done();
+                });
+        });
+        it('calculates modulo with negative divisor', function (done) {
+            request.get('/arithmetic?operation=modulo&operand1=10&operand2=-3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('calculates modulo with floating point numbers', function (done) {
+            request.get('/arithmetic?operation=modulo&operand1=5.5&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1.5 });
+                    done();
+                });
+        });
+        it('calculates modulo by zero', function (done) {
+            request.get('/arithmetic?operation=modulo&operand1=10&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+    });
+
     describe('Multiplication', function () {
         it('multiplies two positive integers', function (done) {
             request.get('/arithmetic?operation=multiply&operand1=21&operand2=2')

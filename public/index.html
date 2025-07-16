@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <script src="client.js"></script>
   </head>
-  <body onLoad="setValue(0)">
+  <body onLoad="setValue(0); initializeTheme();">
     <div class="container">
+      <div class="header">
+        <button id="themeToggle" class="theme-toggle" title="Toggle Theme">🌓</button>
+      </div>
       <div id="results">
         <div id="result"><span class="digit0">0</span></div>
       </div>
@@ -16,6 +19,7 @@
       <div class="box">
         <div class="calculator">
           <div class="calculator-buttons">
+            <button class="btn" onClick="operationPressed('%')">%</button>
             <button class="btn span-2"></button>
             <button class="btn" onClick="clearPressed()">C</button>
             <button class="btn" onClick="clearPressed()">CE</button>
