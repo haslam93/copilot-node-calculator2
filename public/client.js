@@ -15,11 +15,77 @@ var state = states.start;
 var operand1 = 0;
 var operand2 = 0;
 var operation = null;
+var pendingScientific = null;
+
+// Theme toggle function
+function toggleTheme() {
+    const body = document.body;
+    const themeIcon = document.querySelector('.theme-icon');
+    
+    if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeIcon.textContent = '🌙';
+    } else {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeIcon.textContent = '☀️';
+    }
+}
+
+// Scientific functions handler
+function scientificPressed(func) {
+    var currentValue = getValue();
+    var result;
+    
+    switch (func) {
+        case 'sin':
+            result = Math.sin(currentValue * Math.PI / 180);
+            break;
+        case 'cos':
+            result = Math.cos(currentValue * Math.PI / 180);
+            break;
+        case 'tan':
+            result = Math.tan(currentValue * Math.PI / 180);
+            break;
+        case 'log':
+            result = Math.log10(currentValue);
+            break;
+        case 'sqrt':
+            result = Math.sqrt(currentValue);
+            break;
+        case 'square':
+            result = currentValue * currentValue;
+            break;
+        case 'exp':
+            result = Math.exp(currentValue);
+            break;
+        case 'pi':
+            result = Math.PI;
+            break;
+        case 'power':
+            // Store for power operation (x^y)
+            operand1 = currentValue;
+            operation = '^';
+            state = states.operator;
+            return;
+        default:
+            return;
+    }
+    
+    setValue(result);
+    state = states.complete;
+}
 
 function calculate(operand1, operand2, operation) {
+    // Handle power operation locally
+    if (operation === '^') {
+        setValue(Math.pow(operand1, operand2));
+        return;
+    }
+    
     var uri = location.origin + "/arithmetic";
 
-    // TODO: Add operator
     switch (operation) {
         case '+':
             uri += "?operation=add";
