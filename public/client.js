@@ -15,9 +15,14 @@ var state = states.start;
 var operand1 = 0;
 var operand2 = 0;
 var operation = null;
-var pendingScientific = null;
 
-// Theme toggle function
+// Initialize calculator on load
+function initCalculator() {
+    setValue(0);
+    loadThemePreference();
+}
+
+// Theme toggle function with localStorage persistence
 function toggleTheme() {
     const body = document.body;
     const themeIcon = document.querySelector('.theme-icon');
@@ -26,14 +31,34 @@ function toggleTheme() {
         body.classList.remove('dark-mode');
         body.classList.add('light-mode');
         themeIcon.textContent = '🌙';
+        localStorage.setItem('calculatorTheme', 'light');
     } else {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('calculatorTheme', 'dark');
+    }
+}
+
+// Load saved theme preference
+function loadThemePreference() {
+    const savedTheme = localStorage.getItem('calculatorTheme');
+    const body = document.body;
+    const themeIcon = document.querySelector('.theme-icon');
+    
+    if (savedTheme === 'light') {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeIcon.textContent = '🌙';
+    } else {
+        // Default to dark mode
         body.classList.remove('light-mode');
         body.classList.add('dark-mode');
         themeIcon.textContent = '☀️';
     }
 }
 
-// Scientific functions handler
+// Scientific functions handler with input validation
 function scientificPressed(func) {
     var currentValue = getValue();
     var result;
@@ -46,12 +71,26 @@ function scientificPressed(func) {
             result = Math.cos(currentValue * Math.PI / 180);
             break;
         case 'tan':
+            // Check for tan(90) and other problematic angles
+            var angle = currentValue % 360;
+            if (angle === 90 || angle === 270 || angle === -90 || angle === -270) {
+                setError();
+                return;
+            }
             result = Math.tan(currentValue * Math.PI / 180);
             break;
         case 'log':
+            if (currentValue <= 0) {
+                setError();
+                return;
+            }
             result = Math.log10(currentValue);
             break;
         case 'sqrt':
+            if (currentValue < 0) {
+                setError();
+                return;
+            }
             result = Math.sqrt(currentValue);
             break;
         case 'square':
@@ -71,6 +110,12 @@ function scientificPressed(func) {
             return;
         default:
             return;
+    }
+    
+    // Check for invalid results
+    if (!isFinite(result) || isNaN(result)) {
+        setError();
+        return;
     }
     
     setValue(result);

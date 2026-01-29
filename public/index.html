@@ -1,13 +1,15 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
     <title>The One Calculator</title>
     <link rel="stylesheet" href="default.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
     <script src="client.js"></script>
   </head>
-  <body onLoad="setValue(0)" class="dark-mode">
-    <button class="theme-toggle" onClick="toggleTheme()" title="Toggle Dark/Light Mode">
+  <body onLoad="initCalculator()" class="dark-mode">
+    <button type="button" class="theme-toggle" onClick="toggleTheme()" title="Toggle Dark/Light Mode">
       <span class="theme-icon">☀️</span>
     </button>
     <div class="container">
@@ -25,45 +27,45 @@
         <div class="calculator">
           <div class="calculator-buttons">
             <!-- Scientific Functions Row 1 -->
-            <button class="btn btn-scientific" onClick="scientificPressed('sin')">sin</button>
-            <button class="btn btn-scientific" onClick="scientificPressed('cos')">cos</button>
-            <button class="btn btn-scientific" onClick="scientificPressed('tan')">tan</button>
-            <button class="btn btn-scientific" onClick="scientificPressed('log')">log</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('sin')">sin</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('cos')">cos</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('tan')">tan</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('log')">log</button>
             
             <!-- Scientific Functions Row 2 -->
-            <button class="btn btn-scientific" onClick="scientificPressed('sqrt')">√</button>
-            <button class="btn btn-scientific" onClick="scientificPressed('square')">x²</button>
-            <button class="btn btn-scientific" onClick="scientificPressed('power')">xʸ</button>
-            <button class="btn btn-scientific" onClick="scientificPressed('exp')">eˣ</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('sqrt')">√</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('square')">x²</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('power')">xʸ</button>
+            <button type="button" class="btn btn-scientific" onClick="scientificPressed('exp')">eˣ</button>
 
             <!-- Clear and Special Functions -->
-            <button class="btn" onClick="clearPressed()">AC</button>
-            <button class="btn" onClick="signPressed()">+/-</button>
-            <button class="btn" onClick="scientificPressed('pi')">π</button>
-            <button class="btn btn-operator" onClick="operationPressed('/')">&divide;</button>
+            <button type="button" class="btn" onClick="clearPressed()">AC</button>
+            <button type="button" class="btn" onClick="signPressed()">+/-</button>
+            <button type="button" class="btn" onClick="scientificPressed('pi')">π</button>
+            <button type="button" class="btn btn-operator" onClick="operationPressed('/')">&divide;</button>
 
             <!-- Number Pad Row 1 -->
-            <button class="btn" onClick="numberPressed(7)">7</button>
-            <button class="btn" onClick="numberPressed(8)">8</button>
-            <button class="btn" onClick="numberPressed(9)">9</button>
-            <button class="btn btn-operator" onClick="operationPressed('*')">×</button>
+            <button type="button" class="btn" onClick="numberPressed(7)">7</button>
+            <button type="button" class="btn" onClick="numberPressed(8)">8</button>
+            <button type="button" class="btn" onClick="numberPressed(9)">9</button>
+            <button type="button" class="btn btn-operator" onClick="operationPressed('*')">×</button>
 
             <!-- Number Pad Row 2 -->
-            <button class="btn" onClick="numberPressed(4)">4</button>
-            <button class="btn" onClick="numberPressed(5)">5</button>
-            <button class="btn" onClick="numberPressed(6)">6</button>
-            <button class="btn btn-operator" onClick="operationPressed('-')">−</button>
+            <button type="button" class="btn" onClick="numberPressed(4)">4</button>
+            <button type="button" class="btn" onClick="numberPressed(5)">5</button>
+            <button type="button" class="btn" onClick="numberPressed(6)">6</button>
+            <button type="button" class="btn btn-operator" onClick="operationPressed('-')">−</button>
 
             <!-- Number Pad Row 3 -->
-            <button class="btn" onClick="numberPressed(1)">1</button>
-            <button class="btn" onClick="numberPressed(2)">2</button>
-            <button class="btn" onClick="numberPressed(3)">3</button>
-            <button class="btn btn-operator" onClick="operationPressed('+')">+</button>
+            <button type="button" class="btn" onClick="numberPressed(1)">1</button>
+            <button type="button" class="btn" onClick="numberPressed(2)">2</button>
+            <button type="button" class="btn" onClick="numberPressed(3)">3</button>
+            <button type="button" class="btn btn-operator" onClick="operationPressed('+')">+</button>
 
             <!-- Number Pad Row 4 -->
-            <button class="btn span-2" onClick="numberPressed(0)">0</button>
-            <button class="btn" onClick="decimalPressed()">.</button>
-            <button class="btn btn-equals" onClick="equalPressed()">=</button>
+            <button type="button" class="btn span-2" onClick="numberPressed(0)">0</button>
+            <button type="button" class="btn" onClick="decimalPressed()">.</button>
+            <button type="button" class="btn btn-equals" onClick="equalPressed()">=</button>
           </div>
         </div>
       </div>
