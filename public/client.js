@@ -16,10 +16,121 @@ var operand1 = 0;
 var operand2 = 0;
 var operation = null;
 
+// Initialize calculator on load
+function initCalculator() {
+    setValue(0);
+    loadThemePreference();
+}
+
+// Theme toggle function with localStorage persistence
+function toggleTheme() {
+    const body = document.body;
+    const themeIcon = document.querySelector('.theme-icon');
+    
+    if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeIcon.textContent = '🌙';
+        localStorage.setItem('calculatorTheme', 'light');
+    } else {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('calculatorTheme', 'dark');
+    }
+}
+
+// Load saved theme preference
+function loadThemePreference() {
+    const savedTheme = localStorage.getItem('calculatorTheme');
+    const body = document.body;
+    const themeIcon = document.querySelector('.theme-icon');
+    
+    if (savedTheme === 'light') {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeIcon.textContent = '🌙';
+    } else {
+        // Default to dark mode
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeIcon.textContent = '☀️';
+    }
+}
+
+// Scientific functions handler with input validation
+function scientificPressed(func) {
+    var currentValue = getValue();
+    var result;
+    
+    switch (func) {
+        case 'sin':
+            result = Math.sin(currentValue * Math.PI / 180);
+            break;
+        case 'cos':
+            result = Math.cos(currentValue * Math.PI / 180);
+            break;
+        case 'tan':
+            // Check for tan(90) and other problematic angles
+            var angle = currentValue % 360;
+            if (angle === 90 || angle === 270 || angle === -90 || angle === -270) {
+                setError();
+                return;
+            }
+            result = Math.tan(currentValue * Math.PI / 180);
+            break;
+        case 'log':
+            if (currentValue <= 0) {
+                setError();
+                return;
+            }
+            result = Math.log10(currentValue);
+            break;
+        case 'sqrt':
+            if (currentValue < 0) {
+                setError();
+                return;
+            }
+            result = Math.sqrt(currentValue);
+            break;
+        case 'square':
+            result = currentValue * currentValue;
+            break;
+        case 'exp':
+            result = Math.exp(currentValue);
+            break;
+        case 'pi':
+            result = Math.PI;
+            break;
+        case 'power':
+            // Store for power operation (x^y)
+            operand1 = currentValue;
+            operation = '^';
+            state = states.operator;
+            return;
+        default:
+            return;
+    }
+    
+    // Check for invalid results
+    if (!isFinite(result) || isNaN(result)) {
+        setError();
+        return;
+    }
+    
+    setValue(result);
+    state = states.complete;
+}
+
 function calculate(operand1, operand2, operation) {
+    // Handle power operation locally
+    if (operation === '^') {
+        setValue(Math.pow(operand1, operand2));
+        return;
+    }
+    
     var uri = location.origin + "/arithmetic";
 
-    // TODO: Add operator
     switch (operation) {
         case '+':
             uri += "?operation=add";
